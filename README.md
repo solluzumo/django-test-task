@@ -11,12 +11,12 @@ git clone https://github.com/solluzumo/django-test-task.git
 cd django-test-task
 ```
 Создаём и активируем виртуальное окружение
-Windows
+# Windows
 ```
 python -m venv venv
 venv\Scripts\activate
 ```
-Linux/macOS
+# Linux/macOS
 ```
 python -m venv venv
 source venv/bin/activate
