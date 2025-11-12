@@ -37,8 +37,8 @@ cd django-test-task
 ```
 2. Создаём и активируем виртуальное окружение
 
-# Windows
 ```
+# Windows
 python3.11 -m venv venv ИЛИ py -3.11 -m venv venv
 
 venv\Scripts\activate
