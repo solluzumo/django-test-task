@@ -5,22 +5,33 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="p-4">
-
-<h2 id="form_title">Создание транзакции</h2>
+<a href="/" class="btn btn-secondary">
+    Вернуться домой
+</a>
+<h2 id="form_title">
+    {% if transaction %}Редактирование транзакции{% else %}Создание транзакции{% endif %}
+</h2>
 
 <form id="transactionForm" class="mt-4">
     {% csrf_token %}
 
-    <input type="hidden" id="transaction_id" value="{{ transaction.id|default:'' }}">
+    {% if transaction %}
+        <input type="hidden" id="transaction_id" value="{{ transaction.id }}">
+    {% else %}
+        <input type="hidden" id="transaction_id" value="">
+    {% endif %}
 
     <label>Дата:</label>
-    <input class="form-control" type="date" id="created_at" value="{{ transaction.created_at|default:'' }}"><br>
+    <input class="form-control" type="date" id="created_at"
+        value="{% if transaction %}{{ transaction.created_at|date:'Y-m-d' }}{% endif %}"><br>
 
     <label>Сумма:</label>
-    <input class="form-control" type="number" id="money" value="{{ transaction.money|default:'' }}"><br>
+    <input class="form-control" type="number" id="money"
+        value="{% if transaction %}{{ transaction.money }}{% endif %}"><br>
 
     <label>Комментарий:</label>
-    <input class="form-control" type="text" id="comment" value="{{ transaction.comment|default:'' }}"><br>
+    <input class="form-control" type="text" id="comment"
+        value="{% if transaction %}{{ transaction.comment }}{% endif %}"><br>
 
     <label>Статус:</label>
     <select class="form-select" id="status">
@@ -59,8 +70,8 @@
 
     <br><br>
     <button class="btn btn-success" type="button" onclick="submitForm()">Сохранить</button>
-    {% if transaction.id %}
-    <button class="btn btn-danger" onclick="deleteTransaction('{{ id }}')">Удалить</button>
+    {% if transaction %}
+    <button class="btn btn-danger" onclick="deleteTransaction('{{ transaction.id }}')">Удалить</button>
     {% endif %}
 
 </form>
