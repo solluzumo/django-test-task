@@ -39,9 +39,7 @@ cd django-test-task
 ```
 # Windows
 
-python3.11 -m venv venv
-или
-py -3.11 -m venv venv
+python3.11 -m venv venv или py -3.11 -m venv venv
 venv\Scripts\activate
 ------------------------
 # Linux/macOS
