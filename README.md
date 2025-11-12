@@ -4,6 +4,7 @@
 - Django 4.x (уточни конкретную версию из `requirements.txt`)
 - Остальные зависимости указаны в `requirements.txt`
 
+##Инструкция по запуску
 Клонируем репозиторий
 ```
 git clone https://github.com/solluzumo/django-test-task.git
