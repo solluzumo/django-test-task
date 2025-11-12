@@ -5,9 +5,10 @@
 - Остальные зависимости указаны в `requirements.txt`
 
 ## Инструкция по запуску
-Клонируем репозиторий
+Клонируем репозиторий, переходим в папку
 ```
 git clone https://github.com/solluzumo/django-test-task.git
+cd django-test-task
 ```
 Создаём и активируем виртуальное окружение
 ```
