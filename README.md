@@ -50,7 +50,6 @@ source venv/bin/activate
 ```
 3. Устанавливаем зависимости
 ```
-pip install --upgrade pip
 pip install -r requirements.txt
 ```
 4. Создаём суперпользователя для доступа к админ-панеле(необязательно)
