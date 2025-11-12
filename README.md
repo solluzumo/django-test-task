@@ -3,8 +3,11 @@
 - Python от 3.11
 - Django 5.2.8
 - Остальные зависимости указаны в `requirements.txt`
+
 Установка Python
+
 Для Windows: установить с официального сайта https://www.python.org/downloads/release/python-3110/
+
 Для Linux:
 ```
 sudo apt update
