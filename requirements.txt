@@ -3,7 +3,6 @@ attrs==25.4.0
 Django==5.2.8
 django-admin-rangefilter==0.13.3
 django-cors-headers==4.9.0
-django-filter==25.2
 djangorestframework==3.16.1
 drf-spectacular==0.29.0
 drf-spectacular-sidecar==2025.10.1

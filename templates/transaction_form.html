@@ -44,6 +44,16 @@
 
     <br>
 
+    <label>Тип:</label>
+    <select class="form-select" id="t_type" onchange="loadCategoriesByType()">
+        {% for t in types %}
+        <option value="{{ t.id }}" {% if transaction.t_type_id == t.id %}selected{% endif %}>
+            {{ t.name }}
+        </option>
+        {% endfor %}
+    </select>
+    <br>
+
     <label>Категория:</label>
     <select class="form-select" id="category" onchange="loadSubCategories()">
         <option value="">-- выберите категорию --</option>
@@ -58,15 +68,6 @@
     <label>Подкатегория:</label>
     <select class="form-select" id="sub_category"></select>
     <br>
-
-    <label>Тип:</label>
-    <select class="form-select" id="t_type">
-        {% for t in types %}
-        <option value="{{ t.id }}" {% if transaction.t_type_id == t.id %}selected{% endif %}>
-            {{ t.name }}
-        </option>
-        {% endfor %}
-    </select>
 
     <br><br>
     <button class="btn btn-success" type="button" onclick="submitForm()">Сохранить</button>
@@ -99,6 +100,28 @@ function deleteTransaction(id) {
     .catch(err => console.error(err));
 }
 
+// Подгрузка категорий по выбранному типу
+function loadCategoriesByType() {
+    const typeId = document.getElementById("t_type").value;
+    const categorySelect = document.getElementById("category");
+    const subCatSelect = document.getElementById("sub_category");
+
+    // Очистим текущие категории и подкатегории
+    categorySelect.innerHTML = '<option value="">-- выберите категорию --</option>';
+    subCatSelect.innerHTML = '';
+
+    if (!typeId) return;
+
+    // TODO: backend должен вернуть JSON со списком категорий для типа
+    fetch(`/directory/get-categories-by-type/${typeId}/`)
+        .then(res => res.json())
+        .then(data => {
+            data.forEach(c => {
+                categorySelect.innerHTML += `<option value="${c.category__id}">${c.category__name}</option>`;
+            });
+        })
+        .catch(err => console.error(err));
+}
 
 function loadSubCategories() {
     const categoryId = document.getElementById("category").value;

@@ -5,6 +5,7 @@ from django.shortcuts import render
 from .services.cat_sub_cat_link import link_cat_to_sub, update_category_subcategory
 from .services.cat_type_link import update_category_type,link_cat_to_type
 from .selectors.cat_sub_cat_link import get_subs_by_cat
+from .selectors.cat_type_link import get_cats_by_type
 
 from .models import(
     TransactionStatus,
@@ -60,6 +61,23 @@ class DirectoryView(APIView):
         })
 
 
+class CategoryTypeView(APIView):
+
+    def get(self, request, type_id):
+
+        categories = get_cats_by_type(type_id)
+
+        return Response(list(categories))
+    
+
+class SubCategoriesByCategoryView(APIView):
+    def get(self, request, category_id):
+        subcategories = get_subs_by_cat(category_id)
+
+        return Response(list(subcategories))
+    
+#----------VIEWSETS----------
+    
 class CategorySubCategoryViewSet(viewsets.ModelViewSet):
     queryset = CategorySubCategory.objects.all()
     serializer_class = CategorySubCategorySerializer
@@ -114,13 +132,8 @@ class CategoryTypeViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(updated_instance)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-class SubCategoriesByCategoryView(APIView):
-    def get(self, request, category_id):
-        subcategories = get_subs_by_cat(category_id)
-
-        return Response(list(subcategories))
     
+
 class TransactionStatusViewSet(viewsets.ModelViewSet):
     queryset = TransactionStatus.objects.all()
     serializer_class = TransactionStatusSerializer
@@ -140,8 +153,5 @@ class TransactionTypeViewSet(viewsets.ModelViewSet):
     serializer_class = TransactionTypeSerializer
 
 
-def directories(request):
+def render_directory_home(request):
     return render(request, "directory.html")
-
-def directories_form(request):
-    return render(request, "directory_form.html")

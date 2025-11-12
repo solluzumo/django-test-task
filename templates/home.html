@@ -7,7 +7,7 @@
 </head>
 <body class="p-4">
 
-<div>
+<div class="mb-3">
     <a href="/directory/edit" class="btn btn-secondary">
         📚 Управление справочниками
     </a>
@@ -18,45 +18,61 @@
 
 <h2>Фильтр транзакций</h2>
 
-<div class="mt-3">
+<form id="filterForm" class="mt-3" onsubmit="event.preventDefault(); fetchTransactions();">
 
     <!-- Category -->
     <div class="mb-2">
-        <label>Категория:</label>
-        <input type="text" id="category" class="form-control" placeholder="Введите категорию">
-    </div>
-
-    <!-- Status -->
-    <div class="mb-2">
-        <label>Статус:</label>
-        <input type="text" id="status" class="form-control" placeholder="Введите статус">
-    </div>
-
-    <!-- Type -->
-    <div class="mb-2">
-        <label>Тип транзакции:</label>
-        <input type="text" id="t_type" class="form-control" placeholder="Введите тип">
+        <label for="category">Категория:</label>
+        <select class="form-select" id="category" onchange="loadSubCategories()">
+            <option value="">-- выберите категорию --</option>
+            {% for c in categories %}
+            <option value="{{ c.id }}" data-name="{{ c.name }}">{{ c.name }}</option>
+            {% endfor %}
+        </select>
     </div>
 
     <!-- SubCategory -->
     <div class="mb-2">
-        <label>Подкатегория:</label>
-        <input type="text" id="sub_category" class="form-control" placeholder="Введите подкатегорию">
+        <label for="sub_category">Подкатегория:</label>
+        <select class="form-select" id="sub_category">
+            <option value="">-- выберите подкатегорию --</option>
+        </select>
+    </div>
+
+    <!-- Status -->
+    <div class="mb-2">
+        <label for="status">Статус:</label>
+        <select class="form-select" id="status">
+            <option value="">-- выберите статус --</option>
+            {% for s in statuses %}
+            <option value="{{ s.id }}" data-name="{{ s.name }}">{{ s.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Type -->
+    <div class="mb-2">
+        <label for="t_type">Тип транзакции:</label>
+        <select class="form-select" id="t_type">
+            <option value="">-- выберите тип --</option>
+            {% for t in types %}
+            <option value="{{ t.id }}" data-name="{{ t.name }}">{{ t.name }}</option>
+            {% endfor %}
+        </select>
     </div>
 
     <!-- Dates -->
     <div class="mb-2">
-        <label>Дата с:</label>
+        <label for="created_at__gte">Дата с:</label>
         <input type="date" id="created_at__gte" class="form-control">
     </div>
     <div class="mb-2">
-        <label>Дата по:</label>
+        <label for="created_at__lte">Дата по:</label>
         <input type="date" id="created_at__lte" class="form-control">
     </div>
 
-    <button class="btn btn-primary mt-2" onclick="fetchTransactions()">Получить транзакции</button>
-
-</div>
+    <button type="submit" class="btn btn-primary mt-2">Получить транзакции</button>
+</form>
 
 <hr>
 <h3>Результаты:</h3>
@@ -71,46 +87,74 @@
             <th>Подкатегория</th>
             <th>Сумма</th>
             <th>Комментарий</th>
+            <th>Действия</th>
         </tr>
     </thead>
     <tbody id="transactions_tbl"></tbody>
 </table>
 
-
 <script>
-function getCookie(name) {
+const csrftoken = (() => {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
         for (let cookie of cookies) {
             cookie = cookie.trim();
-            if (cookie.startsWith(name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            if (cookie.startsWith('csrftoken=')) {
+                cookieValue = decodeURIComponent(cookie.substring('csrftoken='.length));
                 break;
             }
         }
     }
     return cookieValue;
+})();
+
+// Подгрузка подкатегорий
+function loadSubCategories() {
+    const categoryId = document.getElementById("category").value;
+    const subCatSelect = document.getElementById("sub_category");
+
+    if (!categoryId) {
+        subCatSelect.innerHTML = '<option value="">-- выберите подкатегорию --</option>';
+        return;
+    }
+
+    fetch(`/directory/get-subcategories/${categoryId}/`)
+        .then(res => res.json())
+        .then(data => {
+            subCatSelect.innerHTML = '<option value="">-- выберите подкатегорию --</option>';
+            data.forEach(item => {
+                subCatSelect.innerHTML += `<option value="${item.sub_category__id}" data-name="${item.sub_category__name}">${item.sub_category__name}</option>`;
+            });
+        })
+        .catch(err => console.error(err));
 }
 
-const csrftoken = getCookie('csrftoken');
+// Получение name выбранного option
+function getSelectedOptionName(selectId) {
+    const select = document.getElementById(selectId);
+    const option = select.options[select.selectedIndex];
+    return option ? option.getAttribute("data-name") : undefined;
+}
 
+// Фильтр транзакций
 function fetchTransactions() {
+    const category = getSelectedOptionName("category") || undefined;
+    const sub_category = getSelectedOptionName("sub_category") || undefined;
+    const status = getSelectedOptionName("status") || undefined;
+    const t_type = getSelectedOptionName("t_type") || undefined;
+    const date_from = document.getElementById("created_at__gte").value || undefined;
+    const date_to = document.getElementById("created_at__lte").value || undefined;
+
+    if (date_from && date_to && date_from > date_to) {
+        alert("Дата 'с' не может быть позже даты 'по'");
+        return;
+    }
+
     const payload = {
-        filters: {
-            "category": document.getElementById("category").value || undefined,
-            "status": document.getElementById("status").value || undefined,
-            "t_type": document.getElementById("t_type").value || undefined,
-            "sub_category": document.getElementById("sub_category").value || undefined,
-            "created_at__gte": document.getElementById("created_at__gte").value || undefined,
-            "created_at__lte": document.getElementById("created_at__lte").value || undefined,
-        },
+        filters: { category, sub_category, status, t_type, created_at__gte: date_from, created_at__lte: date_to },
         order_by: []
     };
-
-    Object.keys(payload.filters).forEach(key => {
-        if (!payload.filters[key]) delete payload.filters[key];
-    });
 
     fetch("/transaction/list/", {
         method: "POST",
@@ -125,6 +169,7 @@ function fetchTransactions() {
     .catch(err => console.error(err));
 }
 
+// Отображение таблицы
 function renderTransactions(data) {
     const tbody = document.getElementById("transactions_tbl");
     tbody.innerHTML = "";
@@ -149,9 +194,7 @@ function renderTransactions(data) {
         `;
     });
 }
-
 </script>
-
 
 </body>
 </html>

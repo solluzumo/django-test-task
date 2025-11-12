@@ -11,7 +11,8 @@ from .views import (
     CategoryTypeViewSet, 
     DirectoryView, 
     SubCategoriesByCategoryView,
-    directories
+    render_directory_home,
+    CategoryTypeView
 )
 
 router = DefaultRouter()
@@ -25,6 +26,7 @@ router.register(r"category_type_links", CategoryTypeViewSet, basename="category_
 urlpatterns = [
     path("list/", DirectoryView.as_view(), name="directory-list"),
     path("get-subcategories/<int:category_id>/", SubCategoriesByCategoryView.as_view()),
-    path("edit/",directories),
+    path("get-categories-by-type/<int:type_id>/", CategoryTypeView.as_view()),
+    path("edit/",render_directory_home),
     path("", include(router.urls)),   
 ]
