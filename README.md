@@ -24,7 +24,7 @@ source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
-Создаём суперпользователя
+Создаём суперпользователя для доступа к админ-панеле(необязательно)
 ```
 python manage.py createsuperuser
 ```
