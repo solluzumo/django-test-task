@@ -1,6 +1,7 @@
 from apps.directory.models import TransactionCategory, TransactionSubCategory, CategorySubCategory
 from rest_framework.exceptions import ValidationError
 
+#Привязывае подкатегорию к категории по названиям
 def link_cat_to_sub(category:str, subCategory:str):    
         
     #Проверяем существуют ли объекты перед связкой
@@ -21,14 +22,14 @@ def link_cat_to_sub(category:str, subCategory:str):
     
     return CategorySubCategory.objects.create(category=catObj, sub_category=subCatObj)
 
+#Обновляем связь категори-подкатегория
 def update_category_subcategory(instance, category_name: str, subcategory_name: str):
 
-    category = TransactionCategory.objects.filter(name=category_name.strip()).first()
-    
+    #Проверяем существование перед обновлением
+    category = TransactionCategory.objects.filter(name=category_name.strip()).first()    
     subcategory = TransactionSubCategory.objects.filter(name=subcategory_name.strip()).first()
 
     if not category or not subcategory:
-
         raise ValidationError("такой категории или подкатегории не существует")
 
     # Проверка дубликата (кроме текущего)

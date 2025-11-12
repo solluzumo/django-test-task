@@ -20,7 +20,6 @@
 
 <form id="filterForm" class="mt-3" onsubmit="event.preventDefault(); fetchTransactions();">
 
-    <!-- Category -->
     <div class="mb-2">
         <label for="category">Категория:</label>
         <select class="form-select" id="category" onchange="loadSubCategories()">
@@ -31,7 +30,6 @@
         </select>
     </div>
 
-    <!-- SubCategory -->
     <div class="mb-2">
         <label for="sub_category">Подкатегория:</label>
         <select class="form-select" id="sub_category">
@@ -39,7 +37,6 @@
         </select>
     </div>
 
-    <!-- Status -->
     <div class="mb-2">
         <label for="status">Статус:</label>
         <select class="form-select" id="status">
@@ -50,7 +47,6 @@
         </select>
     </div>
 
-    <!-- Type -->
     <div class="mb-2">
         <label for="t_type">Тип транзакции:</label>
         <select class="form-select" id="t_type">
@@ -61,7 +57,6 @@
         </select>
     </div>
 
-    <!-- Dates -->
     <div class="mb-2">
         <label for="created_at__gte">Дата с:</label>
         <input type="date" id="created_at__gte" class="form-control">

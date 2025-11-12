@@ -3,6 +3,7 @@ from apps.directory.models import TransactionType,TransactionStatus,TransactionC
 from datetime import date
 from config import settings
 
+#Транзакция - ДДС
 class Transaction(models.Model):
     
     created_at = models.DateField(default=date.today, verbose_name="Дата")

@@ -10,7 +10,7 @@
 <a href="/" class="btn btn-secondary">
     Вернуться домой
 </a>
-<!-- Category -->
+
 <div class="mb-2">
     <label>Категория:</label>
     <div class="input-group">
@@ -19,7 +19,6 @@
     </div>
 </div>
 
-<!-- Status -->
 <div class="mb-2">
     <label>Статус:</label>
     <div class="input-group">
@@ -28,7 +27,6 @@
     </div>
 </div>
 
-<!-- Type -->
 <div class="mb-2">
     <label>Тип транзакции:</label>
     <div class="input-group">
@@ -37,7 +35,6 @@
     </div>
 </div>
 
-<!-- SubCategory -->
 <div class="mb-2">
     <label>Подкатегория:</label>
     <div class="input-group">
@@ -203,6 +200,7 @@ function cancelEdit(btn, originalValues) {
     });
 }
 
+//Функция добавление статуса, категории, подкатегории, типа
 function addDirectoryItem(type, inputId) {
     const value = document.getElementById(inputId).value.trim();
     if (!value) return alert("Введите значение!");
@@ -225,6 +223,8 @@ function addDirectoryItem(type, inputId) {
     })
     .catch(err => alert(err.message));
 }
+
+//Функция добавления свящи категории-подкатегории
 function addCatSubLink() {
     const category = document.getElementById("link_category").value.trim();
     const sub = document.getElementById("link_subcategory").value.trim();
@@ -256,6 +256,7 @@ function addCatSubLink() {
     });
 }
 
+//Функция добавления свящи категории-типа
 function addCatTypeLink() {
     const category = document.getElementById("link_category2").value.trim();
     const type = document.getElementById("link_type").value.trim();

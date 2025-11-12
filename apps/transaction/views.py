@@ -15,7 +15,7 @@ from apps.directory.models import(
 
 class TransactionListView(APIView):
 
-    #Получение списка
+    #Получение отфильтрованного списка транзакций
     def post(self, request):
         validator = TransactionQuerySerializer(data=request.data)
         validator.is_valid(raise_exception=True)
@@ -29,12 +29,14 @@ class TransactionViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
     
-
+#Функция рендера для редактирования/создания формы
 def transaction_form(request, id=None):
-
+    
+    #Если создаём транзакций
     transaction = None
     transaction_id = None
 
+    #Если редактируем транзакцию
     if id:
         transaction = get_object_or_404(Transaction, id=id)
         transaction_id = transaction.id

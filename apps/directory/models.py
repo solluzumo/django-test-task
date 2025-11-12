@@ -6,7 +6,6 @@ class TransactionType(models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name="Название")
 
     def __str__(self):
-
         return self.name
     
     class Meta:
@@ -19,13 +18,10 @@ class TransactionStatus(models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name="Название")
 
     def __str__(self):
-
         return self.name
     
     class Meta:
-
         verbose_name = "Статус"
-
         verbose_name_plural = "Статусы"
 
 
@@ -34,30 +30,24 @@ class TransactionCategory(models.Model):
     name = models.CharField(max_length=50, verbose_name="Название")
 
     def __str__(self):
-
         return self.name  
     
     class Meta:
-
         verbose_name = "Категория"
-
         verbose_name_plural = "Категории"  
 
 class TransactionSubCategory(models.Model):
 
     name = models.CharField(max_length=50, verbose_name="Название")
     
-    def __str__(self): 
-
+    def __str__(self):        
         return self.name
       
     class Meta:
-
         verbose_name = "Подкатегория"
-
         verbose_name_plural = "Подкатегории"
    
-#Сущности связки   
+#Связь категория-тип 
 class CategoryType(models.Model):
 
     category = models.ForeignKey(TransactionCategory, on_delete=models.CASCADE, verbose_name="Категория")
@@ -72,7 +62,7 @@ class CategoryType(models.Model):
 
         unique_together = ('category','t_type')
 
-
+#Связь категория-подкатегория
 class CategorySubCategory(models.Model):
     
     sub_category = models.ForeignKey(TransactionSubCategory, on_delete=models.CASCADE, verbose_name="Подкатегория")

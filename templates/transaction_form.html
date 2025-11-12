@@ -78,6 +78,8 @@
 </form>
 
 <script>
+
+//Функция удаления транзакции
 function deleteTransaction(id) {
     if (!confirm("Вы уверены, что хотите удалить эту транзакцию?")) {
         return;
@@ -100,19 +102,17 @@ function deleteTransaction(id) {
     .catch(err => console.error(err));
 }
 
-// Подгрузка категорий по выбранному типу
+//Функция подгрузки категорий для определеного типа
 function loadCategoriesByType() {
     const typeId = document.getElementById("t_type").value;
     const categorySelect = document.getElementById("category");
     const subCatSelect = document.getElementById("sub_category");
 
-    // Очистим текущие категории и подкатегории
     categorySelect.innerHTML = '<option value="">-- выберите категорию --</option>';
     subCatSelect.innerHTML = '';
 
     if (!typeId) return;
 
-    // TODO: backend должен вернуть JSON со списком категорий для типа
     fetch(`/directory/get-categories-by-type/${typeId}/`)
         .then(res => res.json())
         .then(data => {
@@ -123,6 +123,7 @@ function loadCategoriesByType() {
         .catch(err => console.error(err));
 }
 
+//Функция подгрузки подкатегорий для определеной категории
 function loadSubCategories() {
     const categoryId = document.getElementById("category").value;
     const subCatSelect = document.getElementById("sub_category");
@@ -145,7 +146,7 @@ function loadSubCategories() {
         });
 }
 
-
+//Функция агрегирует данные и делает запрос к серверу
 function submitForm() {
     const id = document.getElementById("transaction_id").value;
     const payload = {
@@ -162,7 +163,7 @@ function submitForm() {
     ? `/transaction/detail/${id}/`
     : `/transaction/detail/`;
 
-    const method = id ? "PUT" : "POST";   // ✅ Меняем HTTP метод
+    const method = id ? "PUT" : "POST";
 
     fetch(url, {
         method: method,

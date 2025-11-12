@@ -6,9 +6,9 @@ from apps.directory.models import(
     CategoryType,
     CategorySubCategory
 )
-
 from rest_framework.exceptions import ValidationError
 
+#Привязываем категорию к типу
 def link_cat_to_type(category:str, tType:str):    
         
     #Проверяем существуют ли объекты перед связкой
@@ -26,6 +26,7 @@ def link_cat_to_type(category:str, tType:str):
     
     return CategoryType.objects.create(category=catObj, t_type=tTypeObj)
 
+#Обновляем связь категория-тип
 def update_category_type(instance, category_name: str, t_type_name: str):
 
     category = TransactionCategory.objects.filter(name=category_name.strip()).first()

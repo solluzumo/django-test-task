@@ -26,7 +26,8 @@ from .serializers import (
 )
 
 class DirectoryView(APIView):
-
+    
+    #Получение списка всех статусов, категорий, подкатегорий, типов и связей между ними
     def get(self, request):
         statuses = TransactionStatusSerializer(TransactionStatus.objects.all(), many=True).data
         categories = TransactionCategorySerializer(TransactionCategory.objects.all(), many=True).data
@@ -62,7 +63,7 @@ class DirectoryView(APIView):
 
 
 class CategoryTypeView(APIView):
-
+    #Получение списка категорий определенного типа по id
     def get(self, request, type_id):
 
         categories = get_cats_by_type(type_id)
@@ -71,6 +72,7 @@ class CategoryTypeView(APIView):
     
 
 class SubCategoriesByCategoryView(APIView):
+    #Получение списка подкатегорий определенной категории по id
     def get(self, request, category_id):
         subcategories = get_subs_by_cat(category_id)
 
@@ -81,7 +83,7 @@ class SubCategoriesByCategoryView(APIView):
 class CategorySubCategoryViewSet(viewsets.ModelViewSet):
     queryset = CategorySubCategory.objects.all()
     serializer_class = CategorySubCategorySerializer
-
+    #Создание связки категория-подкатегория
     def create(self, request, *args, **kwargs):
 
         #Парсим запрос
@@ -92,7 +94,7 @@ class CategorySubCategoryViewSet(viewsets.ModelViewSet):
 
         return Response(CategorySubCategorySerializer(obj).data, status=status.HTTP_201_CREATED)
     
-    
+    #Обновление связки категория-подкатегория
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
 
@@ -109,7 +111,7 @@ class CategorySubCategoryViewSet(viewsets.ModelViewSet):
 class CategoryTypeViewSet(viewsets.ModelViewSet):
     queryset = CategoryType.objects.all()
     serializer_class = CategoryTypeSerializer
-
+    #Создание связки категория-тип
     def create(self, request, *args, **kwargs):
 
         #Парсим запрос
@@ -119,7 +121,7 @@ class CategoryTypeViewSet(viewsets.ModelViewSet):
         obj = link_cat_to_type(category, t_type)   
 
         return Response(CategoryTypeSerializer(obj).data, status=status.HTTP_201_CREATED)
-    
+    #Обновление связки категория-тип
     def update(self, request, *args, **kwargs):
 
         instance = self.get_object()
@@ -152,6 +154,6 @@ class TransactionTypeViewSet(viewsets.ModelViewSet):
     queryset = TransactionType.objects.all()
     serializer_class = TransactionTypeSerializer
 
-
+#Рендер странцы редактирования статусов, категорий, подкатегорий, типов и связей между ними
 def render_directory_home(request):
     return render(request, "directory.html")
