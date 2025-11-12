@@ -1,6 +1,6 @@
 ## Требования
 
-- Python 3.11
+- Python от 3.11
 - Django 5.2.8
 - Остальные зависимости указаны в `requirements.txt`
 
@@ -13,11 +13,11 @@ cd django-test-task
 Создаём и активируем виртуальное окружение
 ```
 # Windows
-python3.11 -m venv venv
-venv\Scripts\activate
+python -m venv venv
+venv\bin\activate
 
 # Linux/macOS
-python3.11 -m venv venv
+python -m venv venv
 source venv/bin/activate
 ```
 Устанавливаем зависимости
