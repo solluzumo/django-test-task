@@ -4,6 +4,18 @@
 - Django 5.2.8
 - Остальные зависимости указаны в `requirements.txt`
 
+Установка Python
+
+Для Windows: установить с официального сайта https://www.python.org/downloads/release/python-3110/
+
+Для Linux:
+```
+sudo apt update
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt update
+sudo apt install python3.11 python3.11-venv python3.11-dev
+```
 ## Инструкция по запуску
 Клонируем репозиторий, переходим в папку
 ```
@@ -13,12 +25,14 @@ cd django-test-task
 Создаём и активируем виртуальное окружение
 # Windows
 ```
-python -m venv venv
+python3.11 -m venv venv
+или
+py -3.11 -m venv venv
 venv\Scripts\activate
 ```
 # Linux/macOS
 ```
-python -m venv venv
+python3.11 -m venv venv
 source venv/bin/activate
 ```
 Устанавливаем зависимости
